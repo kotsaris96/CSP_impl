@@ -9,10 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
  
-public class csp2 extends Constraint<Character, Integer> {
+public class csp3 extends Constraint<Character, Integer> {
     private List<Character> letters;
  
-    public csp2(List<Character> letters) {
+    public csp3(List<Character> letters) {
         super(letters);
         this.letters = letters;
     }
@@ -26,13 +26,13 @@ public class csp2 extends Constraint<Character, Integer> {
  
         // if all variables have been assigned, check if it adds correctly
         if (assignment.size() == letters.size()) {
-            int t = assignment.get('T');
+            int w = assignment.get('W');
             int o = assignment.get('O');
-            int f = assignment.get('F');
-            int r = assignment.get('R');
-            int too =t * 36 +  7 * o  ; // 6 * o + o = 7 *o 
-            int res = f * 36 + o * 6 + r;
-            return too + too == res;
+            int n = assignment.get('N');
+            int t = assignment.get('T');
+            int won =w * 100 +  10 * o + n  ; 
+            int res = t * 100 + 10 * o + o; // 10 * o + o = 11 * o 
+            return won + won == res;
         }
         return true; // no conflicts
     }
@@ -40,15 +40,15 @@ public class csp2 extends Constraint<Character, Integer> {
     
     
     public static void main(String[] args) {
-        List<Character> letters = List.of('T', 'O', 'F', 'R');
+        List<Character> letters = List.of('W', 'O', 'N', 'T');
         Map<Character, List<Integer>> possibleDigits = new HashMap<>();
         for (Character letter : letters) {
-            possibleDigits.put(letter, List.of(0, 1, 2, 3, 4, 5));
+            possibleDigits.put(letter, List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
         }
         // so we don't get answers starting with a 0
         possibleDigits.replace('M', List.of(1));
         csp<Character, Integer> csp = new csp<>(letters, possibleDigits);
-        csp.addConstraint(new csp2(letters));
+        csp.addConstraint(new csp3(letters));
         Map<Character, Integer> solution = csp.backtrackingSearch();
         if (solution == null) {
             System.out.println("No solution found!");
